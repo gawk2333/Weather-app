@@ -12,3 +12,7 @@
   text-align: center;
 }
 
+.spacer {
+  flex: 1;
+}
+

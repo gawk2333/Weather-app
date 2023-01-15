@@ -6,7 +6,12 @@ import SearchBar from "./SearchBar";
 const baseLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 const baseAttribution =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-export default function MapBox() {
+export default function MapBox({ markers, setMarkers }) {
+  const handleSaveResult = (r) => {
+    const savedResult = markers.push(r);
+    setMarkers(savedResult);
+    console.log("saved");
+  };
   return (
     <MapContainer
       center={[-41.2448, 172]}
@@ -19,7 +24,7 @@ export default function MapBox() {
       placeholder={<div>this is a placeholder</div>}
     >
       <TileLayer url={baseLayerUrl} attribution={baseAttribution} />
-      <SearchBar />
+      <SearchBar handleSaveResult={handleSaveResult} />
     </MapContainer>
   );
 }
