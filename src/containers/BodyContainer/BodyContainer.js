@@ -27,7 +27,7 @@ export default function BodyContainer() {
       };
 
       const markerString = window.localStorage.getItem("markers");
-      if (markerString && markerString.length !== 0) {
+      if (markerString) {
         const savedMarkers = JSON.parse(markerString);
         updateSavedMarkers(savedMarkers);
       }
@@ -37,7 +37,7 @@ export default function BodyContainer() {
   }, []);
 
   useEffect(() => {
-    if (markers && markers.length !== 0) {
+    if (markers) {
       window.localStorage.setItem("markers", JSON.stringify(markers));
     }
   }, [markers]);
