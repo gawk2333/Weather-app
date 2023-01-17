@@ -1,6 +1,6 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import { Button, Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
+import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
 import { getWeatherByGeoPositionApi } from "../../../../../api/weatherApi";
 import L from "leaflet";

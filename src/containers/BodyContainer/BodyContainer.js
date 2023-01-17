@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import HeaderBar from "../HeaderBar";
 import styles from "./bodyContainer.module.css";
 import MapBox from "./components/MapBox";
-import SideBar from "./components/SideBar";
 
 export default function BodyContainer() {
   const [markers, setMarkers] = useState([]);
@@ -15,13 +14,12 @@ export default function BodyContainer() {
   return (
     <div className={styles.bodyContainer}>
       <HeaderBar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-      <SideBar
-        showSidebar={showSidebar}
-        onSidebarHide={onSidebarHide}
+      <MapBox
         markers={markers}
         setMarkers={setMarkers}
+        onSidebarHide={onSidebarHide}
+        showSidebar={showSidebar}
       />
-      <MapBox markers={markers} setMarkers={setMarkers} />
     </div>
   );
 }

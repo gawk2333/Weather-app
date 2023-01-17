@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./headerBar.module.css";
-import { Button } from "react-bootstrap";
+import { Icon, Popup } from "semantic-ui-react";
 
 export default function HeaderBar({ showSidebar, setShowSidebar }) {
   return (
@@ -10,7 +10,18 @@ export default function HeaderBar({ showSidebar, setShowSidebar }) {
         {/* <AuthenticationButton /> */}
       </div>
       <div className="spacer" />
-      <Button onClick={() => setShowSidebar(!showSidebar)}>Selected</Button>
+      <Popup
+        trigger={
+          <Icon
+            onClick={() => setShowSidebar(!showSidebar)}
+            name="list"
+            color="orange"
+            size="large"
+            style={{ cursor: "pointer", marginTop: 8 }}
+          />
+        }
+        content="Saved markers"
+      />
     </div>
   );
 }
