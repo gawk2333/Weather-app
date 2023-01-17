@@ -4,6 +4,7 @@ import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
 import { getWeatherByGeoPositionApi } from "../../../../../api/weatherApi";
 import L from "leaflet";
+import { toast } from "react-toastify";
 import _ from "lodash";
 
 export default function MarkerTool({ markers, setMarkers, userLocation }) {
@@ -18,6 +19,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
     savedResult.push(activeMarker);
     setMarkers(savedResult);
     setActiveMarker(null);
+    toast.success("Marker saved.");
   };
 
   const handleDeleteMarker = (e, markerForDelete) => {
@@ -26,6 +28,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
       (marker) => marker.id !== markerForDelete.id
     );
     setMarkers(filteredMarkers);
+    toast.success("Marker deleted.");
   };
 
   const getMarkerIcon = (marker, zoomlevel) => {

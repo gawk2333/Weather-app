@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./mapBox.module.css";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { SearchBar, MarkerTool } from "./controls";
 import SideBar from "./SideBar";
 

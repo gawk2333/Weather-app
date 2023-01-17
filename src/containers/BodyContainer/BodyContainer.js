@@ -3,7 +3,7 @@ import HeaderBar from "../HeaderBar";
 import styles from "./bodyContainer.module.css";
 import MapBox from "./components/MapBox";
 import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function BodyContainer() {
   const [markers, setMarkers] = useState(null);
@@ -59,7 +59,6 @@ export default function BodyContainer() {
 
   return (
     <div className={styles.bodyContainer}>
-      <ToastContainer />
       <HeaderBar
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
