@@ -41,12 +41,17 @@ export default function SideBar({
                   <Navbar bg="dark" variant="dark" key={`navbar-${index}`}>
                     <Container>
                       <Navbar.Brand key={`navbar-brand-${index}-1`}>
-                        <img
-                          src={marker.weather.condition.icon}
-                          width="30"
-                          height="30"
-                          className="d-inline-block align-top"
-                          alt="React Bootstrap logo"
+                        <Popup
+                          trigger={
+                            <img
+                              src={marker.weather.condition.icon}
+                              width="30"
+                              height="30"
+                              className="d-inline-block align-top"
+                              alt="React Bootstrap logo"
+                            />
+                          }
+                          content={marker.weather.condition.text}
                         />
                       </Navbar.Brand>
                       <Navbar.Brand key={`navbar-brand-${index}-2`}>
