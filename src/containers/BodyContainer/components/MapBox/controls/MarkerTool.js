@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
@@ -6,7 +6,7 @@ import { getWeatherByGeoPositionApi } from "../../../../../api/weatherApi";
 import L from "leaflet";
 import _ from "lodash";
 
-export default function MarkerTool({ markers, setMarkers }) {
+export default function MarkerTool({ markers, setMarkers, userLocation }) {
   // const [draggingMarker, setDraggingMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [zoom, setZoom] = useState(5);
@@ -82,6 +82,12 @@ export default function MarkerTool({ markers, setMarkers }) {
       setZoom(currentZoom);
     },
   });
+
+  useEffect(() => {
+    if (userLocation) {
+      map.setView(userLocation);
+    }
+  }, [map, userLocation]);
 
   // const eventHandlers = useMemo(
   //   () => ({
@@ -165,7 +171,7 @@ export default function MarkerTool({ markers, setMarkers }) {
           </Popup>
         </Marker>
       )}
-      {markers.map((marker, index) => (
+      {markers?.map((marker, index) => (
         <Marker
           key={marker.id}
           icon={getMarkerIcon(marker, zoom)}

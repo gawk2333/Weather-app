@@ -6,13 +6,14 @@ import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function BodyContainer() {
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     try {
       const updateSavedMarkers = async (localMarkers) => {
-        await localMarkers.map(async (marker) => {
+        const promises = await localMarkers.map(async (marker) => {
           const position = {
             lat: marker.lat,
             lng: marker.lng,
@@ -22,8 +23,10 @@ export default function BodyContainer() {
             marker.weather = result.current;
             marker.location = result.location;
           }
+          return marker;
         });
-        setMarkers(localMarkers);
+        const updatedMarkers = await Promise.all(promises);
+        setMarkers(updatedMarkers);
       };
 
       const markerString = window.localStorage.getItem("markers");
@@ -31,6 +34,14 @@ export default function BodyContainer() {
         const savedMarkers = JSON.parse(markerString);
         updateSavedMarkers(savedMarkers);
       }
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        setUserLocation({
+          lat,
+          lng,
+        });
+      });
     } catch (error) {
       toast.error(error.message);
     }
@@ -49,12 +60,17 @@ export default function BodyContainer() {
   return (
     <div className={styles.bodyContainer}>
       <ToastContainer />
-      <HeaderBar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+      <HeaderBar
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+        userLocation={userLocation}
+      />
       <MapBox
         markers={markers}
         setMarkers={setMarkers}
         onSidebarHide={onSidebarHide}
         showSidebar={showSidebar}
+        userLocation={userLocation}
       />
     </div>
   );

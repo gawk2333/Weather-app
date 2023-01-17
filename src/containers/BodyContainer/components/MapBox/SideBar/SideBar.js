@@ -33,9 +33,9 @@ export default function SideBar({
         <Offcanvas.Title>Markers</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
-        {markers.length === 0
+        {!markers || markers?.length === 0
           ? null
-          : markers.map((marker, index) => {
+          : markers?.map((marker, index) => {
               return (
                 <>
                   <Navbar bg="dark" variant="dark" key={`navbar-${index}`}>

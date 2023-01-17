@@ -16,3 +16,6 @@
   flex: 1;
 }
 
+.halfspacer {
+  flex: 0.1;
+}

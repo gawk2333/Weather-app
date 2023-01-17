@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./mapBox.module.css";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { SearchBar, MarkerTool } from "./controls";
 import SideBar from "./SideBar";
 
@@ -12,11 +12,12 @@ export default function MapBox({
   setMarkers,
   onSidebarHide,
   showSidebar,
+  userLocation,
 }) {
   return (
     <>
       <MapContainer
-        center={[-41.2448, 172]}
+        center={[41.2448, 172]}
         zoom={5}
         maxZoom={19}
         minZoom={3}
@@ -26,7 +27,11 @@ export default function MapBox({
         placeholder={<div>this is a placeholder</div>}
       >
         <TileLayer url={baseLayerUrl} attribution={baseAttribution} />
-        <MarkerTool markers={markers} setMarkers={setMarkers} />
+        <MarkerTool
+          markers={markers}
+          setMarkers={setMarkers}
+          userLocation={userLocation}
+        />
         <SideBar
           showSidebar={showSidebar}
           onSidebarHide={onSidebarHide}

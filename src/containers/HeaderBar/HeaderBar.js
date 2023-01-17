@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./headerBar.module.css";
 import { Icon, Popup } from "semantic-ui-react";
+import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
 
-export default function HeaderBar({ showSidebar, setShowSidebar }) {
+export default function HeaderBar({
+  showSidebar,
+  setShowSidebar,
+  userLocation,
+}) {
+  const [userState, setUserState] = useState(null);
+  useEffect(() => {
+    const fetchUserWeather = async (position) => {
+      const result = await getWeatherByGeoPositionApi(position);
+      if (result) {
+        setUserState(result);
+      }
+    };
+    if (userLocation) {
+      fetchUserWeather(userLocation);
+    }
+  }, [userLocation]);
+
   return (
     <div className={styles.header}>
       <div as="h1" className={styles.logo}>
@@ -10,6 +28,22 @@ export default function HeaderBar({ showSidebar, setShowSidebar }) {
         {/* <AuthenticationButton /> */}
       </div>
       <div className="spacer" />
+      {userState && (
+        <>
+          <div as="h3" className={styles.logo}>
+            {userState.location.name}
+          </div>
+          <div
+            as="h3"
+            className={styles.logo}
+          >{`${userState.current.temp_c}℃`}</div>
+          <img src={userState.current.condition.icon} alt="" />
+          <div as="h3" className={styles.logo}>
+            {userState.current.condition.text}
+          </div>
+        </>
+      )}
+      <div className="halfspacer" />
       <Popup
         trigger={
           <Icon
