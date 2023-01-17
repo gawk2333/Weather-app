@@ -40,7 +40,7 @@ export default function SideBar({
                 <>
                   <Navbar bg="dark" variant="dark" key={`navbar-${index}`}>
                     <Container>
-                      <Navbar.Brand>
+                      <Navbar.Brand key={`navbar-brand-${index}-1`}>
                         <img
                           src={marker.weather.condition.icon}
                           width="30"
@@ -49,19 +49,23 @@ export default function SideBar({
                           alt="React Bootstrap logo"
                         />
                       </Navbar.Brand>
-                      <Navbar.Brand>
+                      <Navbar.Brand key={`navbar-brand-${index}-2`}>
                         <span>{`${marker.weather.temp_c}℃`}</span>
                       </Navbar.Brand>
                       <Navbar.Brand
+                        key={`navbar-brand-${index}-3`}
                         style={{ cursor: "pointer" }}
                         onClick={() => handleNavbarSelect(marker)}
                       >
                         <Popup
                           trigger={<span>{marker.location.name}</span>}
-                          content={"Click to jump the location"}
+                          content={"Click to jump to the location"}
                         />
                       </Navbar.Brand>
-                      <Navbar.Brand style={{ cursor: "pointer" }}>
+                      <Navbar.Brand
+                        key={`navbar-brand-${index}-4`}
+                        style={{ cursor: "pointer" }}
+                      >
                         <Popup
                           trigger={
                             <Icon

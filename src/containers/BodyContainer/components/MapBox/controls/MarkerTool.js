@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
@@ -10,10 +10,10 @@ export default function MarkerTool({ markers, setMarkers }) {
   // const [draggingMarker, setDraggingMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [zoom, setZoom] = useState(5);
-  const markerRef = useRef(null);
+  // const markerRef = useRef(null);
 
   const handleSaveMarker = (e) => {
-    e.preventDefault();
+    e.stopPropagation();
     const savedResult = _.cloneDeep(markers);
     savedResult.push(activeMarker);
     setMarkers(savedResult);
@@ -21,7 +21,7 @@ export default function MarkerTool({ markers, setMarkers }) {
   };
 
   const handleDeleteMarker = (e, markerForDelete) => {
-    e.preventDefault();
+    e.stopPropagation();
     const filteredMarkers = markers.filter(
       (marker) => marker.id !== markerForDelete.id
     );
@@ -173,7 +173,7 @@ export default function MarkerTool({ markers, setMarkers }) {
             lat: marker.lat,
             lng: marker.lng,
           }}
-          ref={markerRef}
+          // ref={markerRef}
         >
           <Popup minWidth={180}>
             <Grid columns={2}>
