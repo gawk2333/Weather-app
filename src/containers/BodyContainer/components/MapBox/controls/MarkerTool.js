@@ -9,6 +9,7 @@ import _ from "lodash";
 export default function MarkerTool({ markers, setMarkers }) {
   // const [draggingMarker, setDraggingMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
+  const [zoom, setZoom] = useState(5);
   const markerRef = useRef(null);
 
   const handleSaveMarker = (e) => {
@@ -27,7 +28,39 @@ export default function MarkerTool({ markers, setMarkers }) {
     setMarkers(filteredMarkers);
   };
 
-  useMapEvents({
+  const getMarkerIcon = (marker, zoomlevel) => {
+    if (marker.weather.condition.icon) {
+      if (zoomlevel >= 3 && zoomlevel < 5) {
+        return L.icon({
+          iconUrl: marker.weather.condition.icon,
+          iconSize: [24, 24],
+          iconAnchor: [12, 12],
+        });
+      } else if (zoomlevel >= 5 && zoomlevel < 8) {
+        return L.icon({
+          iconUrl: marker.weather.condition.icon,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+        });
+      } else if (zoomlevel >= 8 && zoomlevel <= 13) {
+        return L.icon({
+          iconUrl: marker.weather.condition.icon,
+          iconSize: [48, 48],
+          iconAnchor: [24, 24],
+        });
+      } else {
+        return L.icon({
+          iconUrl: marker.weather.condition.icon,
+          iconSize: [64, 64],
+          iconAnchor: [32, 32],
+        });
+      }
+    } else {
+      return L.Icon.Default();
+    }
+  };
+
+  const map = useMapEvents({
     click: async ({ latlng }) => {
       if (latlng) {
         const newMarker = {
@@ -43,6 +76,10 @@ export default function MarkerTool({ markers, setMarkers }) {
           setActiveMarker(newMarker);
         }
       }
+    },
+    zoomend: () => {
+      const currentZoom = map.getZoom();
+      setZoom(currentZoom);
     },
   });
 
@@ -84,15 +121,7 @@ export default function MarkerTool({ markers, setMarkers }) {
     <>
       {activeMarker && (
         <Marker
-          icon={
-            activeMarker.weather.condition.icon
-              ? L.icon({
-                  iconUrl: activeMarker.weather.condition.icon,
-                  iconSize: [64, 64],
-                  iconAnchor: [32, 32],
-                })
-              : L.Icon.Default()
-          }
+          icon={getMarkerIcon(activeMarker, zoom)}
           position={{
             lat: activeMarker.lat,
             lng: activeMarker.lng,
@@ -139,15 +168,7 @@ export default function MarkerTool({ markers, setMarkers }) {
       {markers.map((marker, index) => (
         <Marker
           key={marker.id}
-          icon={
-            marker.weather.condition.icon
-              ? L.icon({
-                  iconUrl: marker.weather.condition.icon,
-                  iconSize: [64, 64],
-                  iconAnchor: [32, 32],
-                })
-              : L.Icon.Default()
-          }
+          icon={getMarkerIcon(marker, zoom)}
           position={{
             lat: marker.lat,
             lng: marker.lng,
