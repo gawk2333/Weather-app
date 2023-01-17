@@ -36,20 +36,20 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
       if (zoomlevel >= 3 && zoomlevel < 5) {
         return L.icon({
           iconUrl: marker.weather.condition.icon,
-          iconSize: [24, 24],
-          iconAnchor: [12, 12],
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
         });
       } else if (zoomlevel >= 5 && zoomlevel < 8) {
         return L.icon({
           iconUrl: marker.weather.condition.icon,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [42, 42],
+          iconAnchor: [21, 21],
         });
       } else if (zoomlevel >= 8 && zoomlevel <= 13) {
         return L.icon({
           iconUrl: marker.weather.condition.icon,
-          iconSize: [48, 48],
-          iconAnchor: [24, 24],
+          iconSize: [52, 52],
+          iconAnchor: [26, 26],
         });
       } else {
         return L.icon({
@@ -135,6 +135,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
             lat: activeMarker.lat,
             lng: activeMarker.lng,
           }}
+          riseOnHover={true}
         >
           <Popup minWidth={180}>
             <Grid columns={2}>
@@ -182,6 +183,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
             lat: marker.lat,
             lng: marker.lng,
           }}
+          riseOnHover={true}
           // ref={markerRef}
         >
           <Popup minWidth={180}>
