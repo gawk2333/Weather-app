@@ -29,8 +29,11 @@ export default function MarkerTool({ markers, setMarkers }) {
 
   useMapEvents({
     click: async ({ latlng }) => {
-      const newMarker = _.cloneDeep(latlng);
       if (latlng) {
+        const newMarker = {
+          lat: latlng.lat,
+          lng: latlng.lng,
+        };
         const weatherResult = await getWeatherByGeoPositionApi(latlng);
         if (weatherResult) {
           newMarker.weather = weatherResult.current;
