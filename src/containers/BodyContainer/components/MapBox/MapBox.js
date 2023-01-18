@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { vectorBasemapLayer } from "esri-leaflet-vector";
 import styles from "./mapBox.module.css";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer } from "react-leaflet";
 import { SearchBar, MarkerTool } from "./controls";
 import SideBar from "./SideBar";
+import { BASE_MAPS } from "../../../HeaderBar/consts";
+import L from "leaflet";
 
-const baseLayerUrl = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-const baseAttribution =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 export default function MapBox({
   markers,
   setMarkers,
@@ -14,6 +14,28 @@ export default function MapBox({
   showSidebar,
   userLocation,
 }) {
+  const [map, setMap] = useState(null);
+  useEffect(() => {
+    if (map != null) {
+      const baseLayers = {};
+      const overLays = {};
+      BASE_MAPS.forEach((eachMap) => {
+        const mapLayer = vectorBasemapLayer(eachMap.value, {
+          apiKey: process.env.REACT_APP_ESRI_API_KEY,
+        });
+        const mapName = eachMap.value;
+        baseLayers[mapName] = mapLayer;
+      });
+      L.control
+        .layers(baseLayers, overLays, { position: "bottomleft" })
+        .addTo(map);
+      baseLayers["ArcGIS:Streets"].addTo(map);
+      return () =>
+        map.removeControl(
+          L.control.layers(baseLayers, overLays, { position: "bottomleft" })
+        );
+    }
+  }, [map]);
   return (
     <>
       <MapContainer
@@ -21,12 +43,11 @@ export default function MapBox({
         zoom={5}
         maxZoom={19}
         minZoom={3}
-        // scrollWheelZoom={false}
+        ref={setMap}
         id="map"
         className={styles.map}
         placeholder={<div>this is a placeholder</div>}
       >
-        <TileLayer url={baseLayerUrl} attribution={baseAttribution} />
         <MarkerTool
           markers={markers}
           setMarkers={setMarkers}

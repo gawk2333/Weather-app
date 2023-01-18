@@ -13,6 +13,36 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
   const [zoom, setZoom] = useState(5);
   // const markerRef = useRef(null);
 
+  const map = useMapEvents({
+    click: async ({ latlng }) => {
+      if (latlng) {
+        const newMarker = {
+          lat: latlng.lat,
+          lng: latlng.lng,
+        };
+        const weatherResult = await getWeatherByGeoPositionApi(latlng);
+        if (weatherResult) {
+          newMarker.weather = weatherResult.current;
+          newMarker.location = weatherResult.location;
+          newMarker.id = v4();
+          newMarker.draggable = false;
+          setActiveMarker(newMarker);
+        }
+      }
+    },
+    zoomend: () => {
+      const currentZoom = map.getZoom();
+      setZoom(currentZoom);
+    },
+  });
+
+  // useEffect(() => {
+  //   if (!currentBaseMap && baseMap) {
+  //     map.addLayer(L.esri.basemapLayer(baseMap.value));
+  //     setCurrentBaseMap(baseMap);
+  //   }
+  // }, [baseMap, currentBaseMap, map]);
+
   const handleSaveMarker = (e) => {
     e.stopPropagation();
     const savedResult = _.cloneDeep(markers);
@@ -62,29 +92,6 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
       return L.Icon.Default();
     }
   };
-
-  const map = useMapEvents({
-    click: async ({ latlng }) => {
-      if (latlng) {
-        const newMarker = {
-          lat: latlng.lat,
-          lng: latlng.lng,
-        };
-        const weatherResult = await getWeatherByGeoPositionApi(latlng);
-        if (weatherResult) {
-          newMarker.weather = weatherResult.current;
-          newMarker.location = weatherResult.location;
-          newMarker.id = v4();
-          newMarker.draggable = false;
-          setActiveMarker(newMarker);
-        }
-      }
-    },
-    zoomend: () => {
-      const currentZoom = map.getZoom();
-      setZoom(currentZoom);
-    },
-  });
 
   useEffect(() => {
     if (userLocation) {
