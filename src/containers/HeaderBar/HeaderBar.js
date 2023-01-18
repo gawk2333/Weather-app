@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./headerBar.module.css";
 import { Icon, Popup, Checkbox } from "semantic-ui-react";
 import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
+import { toast } from "react-toastify";
 
 export default function HeaderBar({
   showSidebar,
@@ -12,14 +13,18 @@ export default function HeaderBar({
 }) {
   const [userState, setUserState] = useState(null);
   useEffect(() => {
-    const fetchUserWeather = async (position) => {
-      const result = await getWeatherByGeoPositionApi(position);
-      if (result) {
-        setUserState(result);
+    try {
+      const fetchUserWeather = async (position) => {
+        const result = await getWeatherByGeoPositionApi(position);
+        if (result) {
+          setUserState(result);
+        }
+      };
+      if (userLocation) {
+        fetchUserWeather(userLocation);
       }
-    };
-    if (userLocation) {
-      fetchUserWeather(userLocation);
+    } catch (error) {
+      toast.error(error.message);
     }
   }, [userLocation]);
 

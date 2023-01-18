@@ -14,6 +14,10 @@ export default function BodyContainer() {
   useEffect(() => {
     try {
       const updateSavedMarkers = async (localMarkers) => {
+        if (localMarkers.lenth === 0) {
+          setMarkers([]);
+          return;
+        }
         const promises = await localMarkers.map(async (marker) => {
           const position = {
             lat: marker.lat,
@@ -30,22 +34,22 @@ export default function BodyContainer() {
         setMarkers(updatedMarkers);
       };
 
-      const markerString = window.localStorage.getItem("markers") || [];
+      const markerString = window.localStorage.getItem("markers");
       if (markerString) {
         const savedMarkers = JSON.parse(markerString);
         updateSavedMarkers(savedMarkers);
       }
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-        setUserLocation({
-          lat,
-          lng,
-        });
-      });
     } catch (error) {
       toast.error(error.message);
     }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      setUserLocation({
+        lat,
+        lng,
+      });
+    });
   }, []);
 
   useEffect(() => {
