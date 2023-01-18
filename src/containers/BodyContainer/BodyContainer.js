@@ -6,7 +6,7 @@ import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
 import { toast } from "react-toastify";
 
 export default function BodyContainer() {
-  const [markers, setMarkers] = useState(null);
+  const [markers, setMarkers] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [isMarker, setIsMarker] = useState(true);
