@@ -30,7 +30,7 @@ export default function MapBox({
       L.control
         .layers(baseLayers, overLays, { position: "bottomleft" })
         .addTo(map);
-      baseLayers["ArcGIS:Streets"].addTo(map);
+      baseLayers["ArcGIS:Imagery:Standard"].addTo(map);
       return () =>
         map.removeControl(
           L.control.layers(baseLayers, overLays, { position: "bottomleft" })

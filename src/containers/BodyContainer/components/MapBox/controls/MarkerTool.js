@@ -48,10 +48,10 @@ export default function MarkerTool({
   //   }
   // }, [baseMap, currentBaseMap, map]);
 
-  const handleSaveMarker = (e) => {
+  const handleSaveMarker = (e, markerForSave) => {
     e.stopPropagation();
     const savedResult = _.cloneDeep(markers);
-    savedResult.push(activeMarker);
+    savedResult.push(markerForSave);
     setMarkers(savedResult);
     setActiveMarker(null);
     toast.success("Marker saved.");
@@ -175,7 +175,7 @@ export default function MarkerTool({
                     trigger={
                       <Icon
                         style={{ cursor: "pointer" }}
-                        onClick={(e) => handleSaveMarker(e)}
+                        onClick={(e) => handleSaveMarker(e, activeMarker)}
                         color="green"
                         name="save"
                       />
