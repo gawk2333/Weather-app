@@ -7,7 +7,12 @@ import L from "leaflet";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
-export default function MarkerTool({ markers, setMarkers, userLocation }) {
+export default function MarkerTool({
+  markers,
+  setMarkers,
+  userLocation,
+  isMarker,
+}) {
   // const [draggingMarker, setDraggingMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [zoom, setZoom] = useState(5);
@@ -62,7 +67,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
   };
 
   const getMarkerIcon = (marker, zoomlevel) => {
-    if (marker.weather.condition.icon) {
+    if (!isMarker && marker.weather.condition.icon) {
       if (zoomlevel >= 3 && zoomlevel < 5) {
         return L.icon({
           iconUrl: marker.weather.condition.icon,
@@ -89,7 +94,7 @@ export default function MarkerTool({ markers, setMarkers, userLocation }) {
         });
       }
     } else {
-      return L.Icon.Default();
+      return new L.Icon.Default();
     }
   };
 

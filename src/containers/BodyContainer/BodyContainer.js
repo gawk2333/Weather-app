@@ -9,6 +9,7 @@ export default function BodyContainer() {
   const [markers, setMarkers] = useState(null);
   const [showSidebar, setShowSidebar] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [isMarker, setIsMarker] = useState(true);
 
   useEffect(() => {
     try {
@@ -63,6 +64,8 @@ export default function BodyContainer() {
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
         userLocation={userLocation}
+        isMarker={isMarker}
+        setIsMarker={setIsMarker}
       />
       <MapBox
         markers={markers}
@@ -70,6 +73,7 @@ export default function BodyContainer() {
         onSidebarHide={onSidebarHide}
         showSidebar={showSidebar}
         userLocation={userLocation}
+        isMarker={isMarker}
       />
     </div>
   );

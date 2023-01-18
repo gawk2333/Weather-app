@@ -13,6 +13,7 @@ export default function MapBox({
   onSidebarHide,
   showSidebar,
   userLocation,
+  isMarker,
 }) {
   const [map, setMap] = useState(null);
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function MapBox({
           markers={markers}
           setMarkers={setMarkers}
           userLocation={userLocation}
+          isMarker={isMarker}
         />
         <SideBar
           showSidebar={showSidebar}

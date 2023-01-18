@@ -1,6 +1,6 @@
 :root {
   --border: #000000;
-  --headerBg: #0a141d;
+  --headerBg: rgb(232, 193, 151);
   --bodyBg: rgb(224, 221, 221);
 }
 

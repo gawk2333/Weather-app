@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./headerBar.module.css";
-import { Icon, Popup } from "semantic-ui-react";
+import { Icon, Popup, Checkbox } from "semantic-ui-react";
 import { getWeatherByGeoPositionApi } from "../../api/weatherApi";
 
 export default function HeaderBar({
   showSidebar,
   setShowSidebar,
   userLocation,
+  isMarker,
+  setIsMarker,
 }) {
   const [userState, setUserState] = useState(null);
   useEffect(() => {
@@ -43,6 +45,16 @@ export default function HeaderBar({
           </div>
         </>
       )}
+      <div className="halfspacer" />
+      <div className={styles.toggle}>
+        <Checkbox
+          toggle
+          label="Use marker"
+          checked={isMarker}
+          onChange={() => setIsMarker(!isMarker)}
+          style={{ marginTop: 8 }}
+        />
+      </div>
       <div className="halfspacer" />
       <Popup
         trigger={
