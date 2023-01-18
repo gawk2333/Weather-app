@@ -1,6 +1,6 @@
 import request from "superagent";
 const APIkey = process.env.REACT_APP_WEATHER_API_KEY;
-const baseUrl = "http://api.weatherapi.com/v1";
+const baseUrl = "https://api.weatherapi.com/v1";
 const currentUrl = "current.json";
 // const focastUrl = "focast.json";
 
