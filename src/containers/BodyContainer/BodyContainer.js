@@ -30,7 +30,7 @@ export default function BodyContainer() {
         setMarkers(updatedMarkers);
       };
 
-      const markerString = window.localStorage.getItem("markers");
+      const markerString = window.localStorage.getItem("markers") || [];
       if (markerString) {
         const savedMarkers = JSON.parse(markerString);
         updateSavedMarkers(savedMarkers);
