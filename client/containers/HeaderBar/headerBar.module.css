@@ -1,0 +1,22 @@
+.logo {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  font-family: "Oleo Script", cursive;
+  color: #000000;
+  padding-left: 1em;
+  font-size: 1.5em;
+}
+
+.header {
+  height: 40px;
+  width: 98vw;
+  margin: 0 auto;
+  background-color: var(--headerBg);
+  border-bottom: 1px solid var(--border);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 10px 1px 5px #424141;
+  display: flex;
+  /* justify-content: space-between; */
+}

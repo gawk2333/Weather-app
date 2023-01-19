@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+# CSV-Box
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A storage for CSV files
 
-## Available Scripts
+checklist
 
-In the project directory, you can run:
+The core requirements (do your best to implement these requirements): 
+- [x] The user should be able to create a new empty box with box name and box description.
+- [x]The user should be able to edit the box name and the description when needed.
+- [x]The user should be able to upload a CSV file into the chosen box.
+- [x]Each box can contain no more than one file.
+- [x]The user should be able to see the list of boxes.
+- [x]The user should be able to view the content of any box: the name, the description and
+the file name inside the box, if any.
+- [x]The user should be able to «unbox» the file, that is download it from the server or
+storage.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Bonus points (you don’t have to implement these requirements but doing so will increase your score):
+- [x](huge bonus) the box view UI may contain a subsequent or embedded UI for viewing the content of the CSV file.
+- [x]authentication: the user should be able to log in and log out;
+- [x]authorization: the logged in users become the owners of the boxes they create;
+- [x]authorization: the owned boxes are private by default
+- [x]authorization: the owners may opt to turn their boxes to be public;
+- [x]authorization: public boxes should be visible to any user (regardless their logged status);
+- [x]authorization: the boxes, created by unauthenticated users are public by default;
+- [ ]authorization: the user should be able to delete only the boxes that they own (have
+created);
+- [ ]authorization: there may be a user with elevated privileges (superuser), who can delete
+any regular user and their data;
+- [ ]authorization: the users may share their boxes with other specific users by knowing their
+usernames or emails.

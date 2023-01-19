@@ -1,0 +1,21 @@
+:root {
+  --border: #000000;
+  --headerBg: rgb(232, 193, 151);
+  --bodyBg: rgb(224, 221, 221);
+}
+
+.App {
+  margin:0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.halfspacer {
+  flex: 0.1;
+}
