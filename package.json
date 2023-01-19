@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node server",
-    "build": "NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider npm run webpack",
+    "build": "NODE_ENV=production npm run webpack",
     "dev": "NODE_ENV=development run-p dev:client dev:server",
     "dev:client": "npm run webpack -- --watch",
     "dev:server": "nodemon server",
