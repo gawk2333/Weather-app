@@ -27,10 +27,10 @@ function SignInPage({ signInFormOpen, setSignInFormOpen }) {
         type: LoginContext.types.LOGIN,
         payload,
       });
+      setSignInFormOpen(false);
     } else {
       toast.error(result.message);
     }
-    setSignInFormOpen(false);
   };
   return (
     <Modal
