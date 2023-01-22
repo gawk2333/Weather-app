@@ -4,6 +4,14 @@
   --bodyBg: rgb(224, 221, 221);
 }
 
+.modal {
+  height: auto;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  right: auto;
+}
+
 .App {
   margin:0;
   padding: 0;

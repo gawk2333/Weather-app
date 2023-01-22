@@ -1,6 +1,6 @@
-const mongoURI = require('../config').mongoURI
-const mongoose = require('mongoose')
+const mongoURI = require("../config").mongoURI;
+const mongoose = require("mongoose");
 // Create mongo connection
-const conn = mongoose.createConnection(mongoURI)
+const conn = mongoose.createConnection(mongoURI);
 
-module.exports = conn
+module.exports = conn;

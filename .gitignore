@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+#bundle
+bundle.js
+bundle.js.map
+
 # production
 /build
 

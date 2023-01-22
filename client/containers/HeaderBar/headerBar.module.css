@@ -5,6 +5,7 @@
   font-family: "Oleo Script", cursive;
   color: #000000;
   padding-left: 1em;
+  padding-top: 0.2em;
   font-size: 1.5em;
 }
 
@@ -16,7 +17,7 @@
   border-bottom: 1px solid var(--border);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  box-shadow: 10px 1px 5px #424141;
+  box-shadow: 5px 1px 5px #424141;
   display: flex;
   /* justify-content: space-between; */
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Offcanvas, Navbar, Container } from "react-bootstrap";
 import { Icon, Popup } from "semantic-ui-react";
 import { useMap } from "react-leaflet";
@@ -37,8 +37,8 @@ export default function SideBar({
           ? null
           : markers?.map((marker, index) => {
               return (
-                <>
-                  <Navbar bg="dark" variant="dark" key={`navbar-${index}`}>
+                <Fragment key={`navbar-${index}`}>
+                  <Navbar bg="dark" variant="dark">
                     <Container>
                       <Navbar.Brand key={`navbar-brand-${index}-1`}>
                         <Popup
@@ -85,7 +85,7 @@ export default function SideBar({
                     </Container>
                   </Navbar>
                   <br />
-                </>
+                </Fragment>
               );
             })}
       </Offcanvas.Body>

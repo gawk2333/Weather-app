@@ -655,6 +655,7 @@ code {
   font-family: "Oleo Script", cursive;
   color: #000000;
   padding-left: 1em;
+  padding-top: 0.2em;
   font-size: 1.5em;
 }
 
@@ -666,7 +667,7 @@ code {
   border-bottom: 1px solid var(--border);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  box-shadow: 10px 1px 5px #424141;
+  box-shadow: 5px 1px 5px #424141;
   display: flex;
   /* justify-content: space-between; */
 }
@@ -942,6 +943,14 @@ code {
   --border: #000000;
   --headerBg: rgb(232, 193, 151);
   --bodyBg: rgb(224, 221, 221);
+}
+
+.modal {
+  height: auto;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  right: auto;
 }
 
 .App {

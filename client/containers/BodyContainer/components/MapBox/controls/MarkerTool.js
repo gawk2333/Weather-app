@@ -104,40 +104,6 @@ export default function MarkerTool({
     }
   }, [map, userLocation]);
 
-  // const eventHandlers = useMemo(
-  //   () => ({
-  //     dragend() {
-  //       const marker = markerRef.current;
-  //       if (marker != null && draggingMarker != null) {
-  //         const markerLatLng = marker.getLatLng();
-  //         const dragedMarkers = markers.map((marker) => {
-  //           if (marker.id === draggingMarker.id) {
-  //             marker.lat = markerLatLng.lat;
-  //             marker.lng = markerLatLng.lng;
-  //           }
-  //           return marker;
-  //         });
-  //         setMarkers(dragedMarkers);
-  //       }
-  //     },
-  //   }),
-  //   [draggingMarker, markers, setMarkers]
-  // );
-
-  // const toggleDraggable = useCallback(
-  //   (markerForDrag) => {
-  //     const toggledMarkers = markers.map((marker) => {
-  //       if (marker.id === markerForDrag.id) {
-  //         marker.draggable = !marker.draggable;
-  //         setDraggingMarker(marker);
-  //       }
-  //       return marker;
-  //     });
-  //     setMarkers(toggledMarkers);
-  //   },
-  //   [markers, setMarkers]
-  // );
-
   return (
     <>
       {activeMarker && (
