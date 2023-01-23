@@ -57,24 +57,33 @@ export default function MarkerTool({
       email: loginState.userProfile.email,
       marker: markerForSave,
     };
-
-    if (markerInfo.email && markerInfo.marker) {
-      const result = await markerCreateApi(markerInfo);
-      if (result.error) {
-        toast.error(result.message);
+    if (loginState.loggedIn) {
+      if (markerInfo.email && markerInfo.marker) {
+        try {
+          const result = await markerCreateApi(markerInfo);
+          if (result.error) {
+            toast.error(result.message);
+          } else {
+            loginDispatch({
+              type: LoginContext.types.SAVE_MARKER,
+              payload: {
+                markers: [...loginState.markers, markerForSave],
+              },
+            });
+            setActiveMarker(null);
+            setMarkers([...markers, markerForSave]);
+            toast.success("Marker saved.");
+          }
+        } catch (err) {
+          toast.error(err.message);
+        }
       } else {
-        loginDispatch({
-          type: LoginContext.types.SAVE_MARKER,
-          payload: {
-            markers: [...loginState.markers, markerForSave],
-          },
-        });
-        setActiveMarker(null);
-        setMarkers([...markers, markerForSave]);
-        toast.success("Marker saved.");
+        toast.error("Invalid request1");
       }
     } else {
-      toast.error("Invalid request1");
+      setActiveMarker(null);
+      setMarkers([...markers, markerForSave]);
+      toast.success("Marker saved.");
     }
   };
 
@@ -84,19 +93,36 @@ export default function MarkerTool({
       email: loginState.userProfile.email,
       marker: markerForDelete,
     };
-    if (markerInfo.email && markerInfo.marker) {
-      const result = await markerDeleteApi(markerInfo);
-      if (result.error) {
-        toast.error(result.message);
+    if (loginState.loggedIn) {
+      if (markerInfo.email && markerInfo.marker) {
+        try {
+          const result = await markerDeleteApi(markerInfo);
+          if (result.error) {
+            toast.error(result.message);
+          } else {
+            const filteredMarkers = loginState.markers.filter(
+              (m) => m.id !== markerForDelete.id
+            );
+            loginDispatch({
+              type: LoginContext.types.DELETE_MARKER,
+              payload: {
+                markers: filteredMarkers,
+              },
+            });
+            toast.success("Marker deleted.");
+          }
+        } catch (err) {
+          toast.error(err.message);
+        }
       } else {
-        loginDispatch({
-          type: LoginContext.types.DELETE_MARKER,
-          payload: markerInfo,
-        });
-        toast.success("Marker deleted.");
+        toast.error("Invalid request");
       }
     } else {
-      toast.error("Invalid request");
+      const filteredMarkers = markers.filter(
+        (m) => m.id !== markerForDelete.id
+      );
+      setMarkers(filteredMarkers);
+      toast.success("Marker deleted2.");
     }
   };
 
