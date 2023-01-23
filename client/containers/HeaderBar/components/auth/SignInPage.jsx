@@ -16,12 +16,13 @@ function SignInPage({ signInFormOpen, setSignInFormOpen }) {
     const result = await signInApi(signInForm);
     if (!result.error) {
       const payload = {
-        authToken: result.authToken,
+        authToken: result.user.token,
         userProfile: {
-          firstname: result.firstname,
-          lastname: result.lastname,
-          email: result.email,
+          firstname: result.user.firstname,
+          lastname: result.user.lastname,
+          email: result.user.email,
         },
+        markers: result.user.markers,
       };
       loginDispatch({
         type: LoginContext.types.LOGIN,

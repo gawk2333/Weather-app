@@ -11,28 +11,38 @@ const initialState = {
     lastName: "",
     email: "",
   },
+  markers: [],
 };
 
 const types = {
   LOGIN: "LOGIN",
   LOGOUT: "LOGOUT",
   SET_TOKEN: "SET_TOKEN",
+  SAVE_MARKER: "SAVE_MARKER",
+  DELETE_MARKER: "DELETE_MARKER",
+};
+
+const setToken = (token) => {
+  window.localStorage.setItem("authToken", token);
 };
 
 const clearStorage = () => {
   window.localStorage.removeItem("authToken");
+  window.localStorage.removeItem("markers");
 };
 
 const reducer = (state, action) => {
-  // console.log('LoginContext reducer -- action:', action);
+  // console.log("LoginContext reducer -- action:", action);
   switch (action.type) {
     case types.LOGIN: {
-      const { authToken, userProfile } = action.payload;
+      const { authToken, userProfile, markers } = action.payload;
+      setToken(authToken);
       return {
         ...state,
         loggedIn: true,
         authToken,
         userProfile,
+        markers,
       };
     }
     case types.LOGOUT: {
@@ -46,6 +56,24 @@ const reducer = (state, action) => {
       return {
         ...state,
         authToken,
+      };
+    }
+    case types.SAVE_MARKER: {
+      const { markers } = action.payload;
+      return {
+        ...state,
+        ...markers,
+      };
+    }
+    case types.DELETE_MARKER: {
+      const { email, marker } = action.payload;
+      const selectedUser = state.filter(
+        (user) => user.userProfile.email === email
+      );
+      const modifiedUser = selectedUser.markers.filter((m) => m !== marker);
+      return {
+        ...state,
+        modifiedUser,
       };
     }
     default:

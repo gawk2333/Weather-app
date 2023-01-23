@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
+import { LoginContext } from "../../../../../store/loginContext";
 import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
+import { markerCreateApi, markerDeleteApi } from "../../../../../api/markerApi";
 import { getWeatherByGeoPositionApi } from "../../../../../api/weatherApi";
 import L from "leaflet";
 import { toast } from "react-toastify";
-import _ from "lodash";
 
 export default function MarkerTool({
   markers,
@@ -16,6 +17,8 @@ export default function MarkerTool({
   // const [draggingMarker, setDraggingMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [zoom, setZoom] = useState(5);
+  const loginState = useContext(LoginContext.State);
+  const loginDispatch = useContext(LoginContext.Dispatch);
   // const markerRef = useRef(null);
 
   const map = useMapEvents({
@@ -48,22 +51,53 @@ export default function MarkerTool({
   //   }
   // }, [baseMap, currentBaseMap, map]);
 
-  const handleSaveMarker = (e, markerForSave) => {
+  const handleSaveMarker = async (e, markerForSave) => {
     e.stopPropagation();
-    const savedResult = _.cloneDeep(markers);
-    savedResult.push(markerForSave);
-    setMarkers(savedResult);
-    setActiveMarker(null);
-    toast.success("Marker saved.");
+    const markerInfo = {
+      email: loginState.userProfile.email,
+      marker: markerForSave,
+    };
+
+    if (markerInfo.email && markerInfo.marker) {
+      const result = await markerCreateApi(markerInfo);
+      if (result.error) {
+        toast.error(result.message);
+      } else {
+        loginDispatch({
+          type: LoginContext.types.SAVE_MARKER,
+          payload: {
+            markers: [...loginState.markers, markerForSave],
+          },
+        });
+        setActiveMarker(null);
+        setMarkers([...markers, markerForSave]);
+        toast.success("Marker saved.");
+      }
+    } else {
+      toast.error("Invalid request1");
+    }
   };
 
-  const handleDeleteMarker = (e, markerForDelete) => {
+  const handleDeleteMarker = async (e, markerForDelete) => {
     e.stopPropagation();
-    const filteredMarkers = markers.filter(
-      (marker) => marker.id !== markerForDelete.id
-    );
-    setMarkers(filteredMarkers);
-    toast.success("Marker deleted.");
+    const markerInfo = {
+      email: loginState.userProfile.email,
+      marker: markerForDelete,
+    };
+    if (markerInfo.email && markerInfo.marker) {
+      const result = await markerDeleteApi(markerInfo);
+      if (result.error) {
+        toast.error(result.message);
+      } else {
+        loginDispatch({
+          type: LoginContext.types.DELETE_MARKER,
+          payload: markerInfo,
+        });
+        toast.success("Marker deleted.");
+      }
+    } else {
+      toast.error("Invalid request");
+    }
   };
 
   const getMarkerIcon = (marker, zoomlevel) => {
@@ -155,7 +189,7 @@ export default function MarkerTool({
       )}
       {markers?.map((marker, index) => (
         <Marker
-          key={marker.id}
+          key={`savedMarker-${marker.id}`}
           icon={getMarkerIcon(marker, zoom)}
           position={{
             lat: marker.lat,

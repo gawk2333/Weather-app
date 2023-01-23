@@ -14,7 +14,9 @@ server.use("/fonts", express.static(resolve(__dirname, "./fonts")));
 // server.use(cors('*'))
 
 const userRoute = require("./routes/userRoute");
+const markerRoute = require("./routes/markerRoute")
 
 server.use("/api/v1/users", userRoute);
+server.use("/api/v1/markers", markerRoute);
 
 module.exports = server;

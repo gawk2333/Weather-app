@@ -19,3 +19,9 @@ export const signInApi = async (loginInfo) => {
       return response.body;
     });
 };
+
+export const validateUserApi = async (authToken) => {
+  return request
+    .post(`${url}/validation/${authToken}`)
+    .then((response) => response.body);
+};

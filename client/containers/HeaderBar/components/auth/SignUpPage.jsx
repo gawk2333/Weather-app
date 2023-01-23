@@ -16,11 +16,11 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
     const result = await signUpApi(signUpForm);
     if (!result.error) {
       const payload = {
-        authToken: result.authToken,
+        authToken: result.user.token,
         userProfile: {
-          firstname: result.firstname,
-          lastname: result.lastname,
-          email: result.email,
+          firstname: result.user.firstname,
+          lastname: result.user.lastname,
+          email: result.user.email,
         },
       };
       loginDispatch({
