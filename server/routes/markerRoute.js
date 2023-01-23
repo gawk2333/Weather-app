@@ -73,12 +73,15 @@ router.delete("/delete", async (req, res) => {
         message: "User does not exist.",
       });
     }
+    const filteredMarkers = requestedUser.markers.filter(
+      (m) => m.id !== marker.id
+    );
 
     const result = await conn
       .collection("users")
       .findOneAndUpdate(
         { email: email.toLowerCase() },
-        { $pull: { markers: marker } }
+        { $set: { markers: filteredMarkers } }
       );
 
     if (result.error) {

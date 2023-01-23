@@ -66,14 +66,10 @@ const reducer = (state, action) => {
       };
     }
     case types.DELETE_MARKER: {
-      const { email, marker } = action.payload;
-      const selectedUser = state.filter(
-        (user) => user.userProfile.email === email
-      );
-      const modifiedUser = selectedUser.markers.filter((m) => m !== marker);
+      const { markers } = action.payload;
       return {
         ...state,
-        modifiedUser,
+        markers,
       };
     }
     default:
