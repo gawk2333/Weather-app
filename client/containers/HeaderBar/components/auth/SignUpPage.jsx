@@ -1,37 +1,79 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { LoginContext } from "../../../../store/loginContext";
-import { Form, Button, Modal } from "semantic-ui-react";
+import { Form, Button, Modal, Message } from "semantic-ui-react";
 import { signUpApi } from "../../../../api/userApi";
 import { toast } from "react-toastify";
 
 function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
   const loginDispatch = useContext(LoginContext.Dispatch);
+  const [emailValidation, setEmailValidation] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([]);
+
   const [signUpForm, setSignUpForm] = useState({
     firstname: "",
     lastname: "",
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    setEmailValidation(validateEmail(signUpForm.email));
+  }, [signUpForm.email]);
+
+  useEffect(() => {
+    let messageList = [];
+    if (
+      !signUpForm.firstname ||
+      !signUpForm.lastname ||
+      !signUpForm.email ||
+      !signUpForm.password
+    ) {
+      messageList.push("All input is required.");
+    }
+    if (!emailValidation) {
+      messageList.push("Email is invalid.");
+    }
+    setErrorMessage(messageList);
+  }, [
+    emailValidation,
+    signUpForm.email,
+    signUpForm.firstname,
+    signUpForm.lastname,
+    signUpForm.password,
+  ]);
+
   const signUpHandler = async () => {
-    const result = await signUpApi(signUpForm);
-    if (!result.error) {
-      const payload = {
-        authToken: result.user.token,
-        userProfile: {
-          firstname: result.user.firstname,
-          lastname: result.user.lastname,
-          email: result.user.email,
-        },
-      };
-      loginDispatch({
-        type: LoginContext.types.LOGIN,
-        payload,
-      });
-      setSignUpFormOpen(false);
+    if (emailValidation) {
+      const result = await signUpApi(signUpForm);
+      if (!result.error) {
+        const payload = {
+          authToken: result.user.token,
+          userProfile: {
+            firstname: result.user.firstname,
+            lastname: result.user.lastname,
+            email: result.user.email,
+          },
+        };
+        loginDispatch({
+          type: LoginContext.types.LOGIN,
+          payload,
+        });
+        setSignUpFormOpen(false);
+      } else {
+        toast.error(result.message);
+      }
     } else {
-      toast.error(result.message);
     }
   };
+
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   return (
     <Modal
       onClose={() => setSignUpFormOpen(false)}
@@ -39,8 +81,9 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
       open={signUpFormOpen}
       centered
     >
+      <Modal.Header>Sign Up</Modal.Header>
       <Modal.Content>
-        <Form>
+        <Form error>
           <Form.Group unstackable widths={2}>
             <Form.Input
               label="First name"
@@ -51,6 +94,7 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
                   firstname: e.target.value,
                 })
               }
+              error={signUpForm.firstname === ""}
             />
             <Form.Input
               label="Last name"
@@ -61,6 +105,7 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
                   lastname: e.target.value,
                 })
               }
+              error={signUpForm.lastname === ""}
             />
           </Form.Group>
           <Form.Group widths={2}>
@@ -73,6 +118,7 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
                   email: e.target.value,
                 })
               }
+              error={!emailValidation}
             />
             <Form.Input
               label="PassWord"
@@ -85,9 +131,21 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
                   password: e.target.value,
                 })
               }
+              error={signUpForm.password === ""}
             />
           </Form.Group>
-          <Button onClick={signUpHandler}>Sign Up</Button>
+          <Message
+            hidden={errorMessage.length === 0}
+            header="There was some errors with your submission"
+            error
+            list={errorMessage}
+          />
+          <Button primary onClick={signUpHandler}>
+            Sign Up
+          </Button>
+          <Button onClick={() => setSignUpFormOpen(false)} color="red">
+            Cancel
+          </Button>
         </Form>
       </Modal.Content>
     </Modal>

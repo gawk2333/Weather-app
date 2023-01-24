@@ -1,16 +1,25 @@
-import React, { useState, useContext } from "react";
-import { Form, Button, Modal } from "semantic-ui-react";
+import React, { useState, useContext, useEffect } from "react";
+import { Form, Button, Modal, Message, Divider } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { LoginContext } from "../../../../store/loginContext";
 import { signInApi } from "../../../../api/userApi";
 
 function SignInPage({ signInFormOpen, setSignInFormOpen }) {
   const loginDispatch = useContext(LoginContext.Dispatch);
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const [signInForm, setsignInForm] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    let messageList = [];
+    if (!signInForm.email || !signInForm.password) {
+      messageList.push("All input is required.");
+    }
+    setErrorMessage(messageList);
+  }, [signInForm.email, signInForm.password]);
 
   const signInHandler = async () => {
     const result = await signInApi(signInForm);
@@ -40,8 +49,9 @@ function SignInPage({ signInFormOpen, setSignInFormOpen }) {
       open={signInFormOpen}
       centered
     >
+      <Modal.Header>Sign In</Modal.Header>
       <Modal.Content>
-        <Form>
+        <Form error>
           <Form.Group unstackable widths={2}>
             <Form.Input
               label="Email"
@@ -52,6 +62,7 @@ function SignInPage({ signInFormOpen, setSignInFormOpen }) {
                   password: signInForm.password,
                 })
               }
+              error={signInForm.email === ""}
             />
             <Form.Input
               label="PassWord"
@@ -64,10 +75,21 @@ function SignInPage({ signInFormOpen, setSignInFormOpen }) {
                   password: e.target.value,
                 })
               }
+              error={signInForm.password === ""}
             />
           </Form.Group>
+          <Divider />
+          <Message
+            hidden={errorMessage.length === 0}
+            header="There was some errors with your submission"
+            error
+            list={errorMessage}
+          />
           <Button onClick={signInHandler} primary>
             Sign In
+          </Button>
+          <Button onClick={() => setSignInFormOpen(false)} color="red">
+            Cancel
           </Button>
         </Form>
       </Modal.Content>
