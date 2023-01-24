@@ -41,6 +41,7 @@ router.post("/register", async (req, res) => {
       lastname,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
+      markers: [],
     });
 
     // Create token
@@ -52,19 +53,16 @@ router.post("/register", async (req, res) => {
       }
     );
 
-    delete user.password;
-    // save user token
-    user.firstname = firstname;
-    user.lastname = lastname;
-    user.email = email;
-    user.token = token;
-    await conn.db
+    const registedUser = await conn.db
       .collection("users")
       .findOneAndUpdate({ email }, { $set: { token: token } });
+
+    registedUser.value.token = token;
+    delete registedUser.value.password;
     // return new user
     return res.json({
       error: false,
-      user,
+      user: registedUser.value,
     });
   } catch (err) {
     console.log(err);
@@ -94,17 +92,17 @@ router.post("/login", async (req, res) => {
         }
       );
 
-      delete user.password;
-      // save user token
-      user.token = token;
-      await conn.db
+      const logedInUser = await conn.db
         .collection("users")
         .findOneAndUpdate({ email }, { $set: { token: token } });
+
+      logedInUser.value.token = token;
+      delete logedInUser.value.password;
 
       // user
       return res.json({
         error: false,
-        user,
+        user: logedInUser.value,
       });
     }
     return res.json({
@@ -128,7 +126,6 @@ router.post("/validation/:token", async (req, res) => {
     }
 
     const validatedUser = await conn.collection("users").findOne({ token });
-
     if (!validatedUser) {
       return res.json({
         error: true,

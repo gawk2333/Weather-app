@@ -53,6 +53,7 @@ function SignUpPage({ signUpFormOpen, setSignUpFormOpen }) {
             lastname: result.user.lastname,
             email: result.user.email,
           },
+          markers: result.user.markers,
         };
         loginDispatch({
           type: LoginContext.types.LOGIN,

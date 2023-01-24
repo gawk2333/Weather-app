@@ -62,7 +62,7 @@ export default function BodyContainer() {
 
   const updateSavedMarkers = useCallback(
     async (localMarkers) => {
-      if (localMarkers.length === 0) {
+      if (!localMarkers || localMarkers?.length === 0) {
         setMarkers([]);
         return;
       }
