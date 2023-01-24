@@ -125,6 +125,23 @@ export default function HeaderBar({
           <Dropdown
             className="button icon"
             floating
+            header={() =>
+              loginState.loggedIn && (
+                <div
+                  style={{
+                    textAlign: "center",
+                    width: "100%",
+                    height: "2em",
+                    padding: "0.5em",
+                  }}
+                >
+                  <span style={{ color: "red" }}>{`Hi, `}</span>
+                  <span
+                    style={{ color: "black" }}
+                  >{`${loginState.userProfile.firstname} ${loginState.userProfile.lastname}`}</span>
+                </div>
+              )
+            }
             options={options}
             trigger={<></>}
             style={{ zIndex: 1000 }}
