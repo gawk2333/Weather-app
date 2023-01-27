@@ -4,6 +4,11 @@ require("dotenv").config();
 const resolve = require("path").resolve;
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
+const dbConnections = require("./db");
+
+dbConnections.initDefaultConnection().then(async () => {
+  console.log(" CONNECTED TO MONGO ");
+});
 // const cors = require('cors')
 const server = express();
 server.use(methodOverride("_method"));

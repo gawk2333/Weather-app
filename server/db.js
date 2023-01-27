@@ -1,6 +1,15 @@
-const mongoURI = require("./config").mongoURI;
+const mongoConfig = require("./config").mongoConfig;
 const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 // Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const defaultConnection = mongoose;
 
-module.exports = conn;
+const initDefaultConnection = function initDefaultConnection() {
+  console.log("mongoURI", mongoConfig.mongoURI);
+  return mongoose.connect(
+    mongoConfig.mongoURI,
+    mongoConfig.dbConnectionOptions
+  );
+};
+
+module.exports = { initDefaultConnection, defaultConnection };

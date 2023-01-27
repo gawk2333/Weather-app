@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const conn = require("../db");
+const UserModel = require("../models/user.model");
 
 const userRegister = async (req, res) => {
   let oldUser;
@@ -18,9 +18,7 @@ const userRegister = async (req, res) => {
 
     // check if user already exist
     // Validate if user exist in our database
-    oldUser = await conn.db
-      .collection("users")
-      .findOne({ email: email.toLowerCase() });
+    oldUser = await UserModel.findOne({ email: email.toLowerCase() }).exec();
 
     if (oldUser) {
       return res.json({
@@ -33,7 +31,7 @@ const userRegister = async (req, res) => {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     // Create user in our database
-    const user = await conn.db.collection("users").insertOne({
+    const user = new UserModel({
       firstname,
       lastname,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
@@ -41,6 +39,7 @@ const userRegister = async (req, res) => {
       markers: [],
     });
 
+    await user.save();
     // Create token
     const token = jwt.sign(
       { user_id: user._id, email },
@@ -50,16 +49,15 @@ const userRegister = async (req, res) => {
       }
     );
 
-    const registedUser = await conn.db
-      .collection("users")
-      .findOneAndUpdate({ email }, { $set: { token: token } });
+    const [registedUser] = await UserModel.where({ email: email })
+      .set([{ token: token }])
+      .select({ password: 0 })
+      .exec();
 
-    registedUser.value.token = token;
-    delete registedUser.value.password;
     // return new user
     return res.json({
       error: false,
-      user: registedUser.value,
+      user: registedUser,
     });
   } catch (err) {
     console.log(err);
@@ -76,7 +74,7 @@ const userLogin = async (req, res) => {
       return res.json({ error: true, message: "All input is required" });
     }
     // Validate if user exist in our database
-    const user = await conn.db.collection("users").findOne({ email });
+    const user = await UserModel.findOne({ email }).exec();
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
@@ -88,17 +86,17 @@ const userLogin = async (req, res) => {
         }
       );
 
-      const logedInUser = await conn.db
-        .collection("users")
-        .findOneAndUpdate({ email }, { $set: { token: token } });
-
-      logedInUser.value.token = token;
-      delete logedInUser.value.password;
+      const [loggedInUser] = await UserModel.where({ email: email })
+        .set([{ token: token }])
+        .select({
+          password: 0,
+        })
+        .exec();
 
       // user
       return res.json({
         error: false,
-        user: logedInUser.value,
+        user: loggedInUser,
       });
     }
     return res.json({
@@ -121,7 +119,7 @@ const validateAuthToken = async (req, res) => {
       });
     }
 
-    const validatedUser = await conn.collection("users").findOne({ token });
+    const validatedUser = await UserModel.findOne({ token }).exec();
     if (!validatedUser) {
       return res.json({
         error: true,
@@ -136,19 +134,16 @@ const validateAuthToken = async (req, res) => {
         expiresIn: "2h",
       }
     );
-    await conn.db
-      .collection("users")
-      .findOneAndUpdate(
-        { email: validatedUser.email },
-        { $set: { token: newToken } }
-      );
-
-    validatedUser.token = newToken;
-    delete validatedUser.password;
+    const [refreshedUser] = await UserModel.where({
+      email: validatedUser.email,
+    })
+      .set([{ token: newToken }])
+      .select({ password: 0 })
+      .exec();
 
     return res.json({
       error: false,
-      user: validatedUser,
+      user: refreshedUser,
     });
   } catch (err) {
     console.log(err);

@@ -1,4 +1,4 @@
-const conn = require("../db");
+const UserModel = require("../models/user.model");
 
 const createMarker = async (req, res) => {
   try {
@@ -13,9 +13,9 @@ const createMarker = async (req, res) => {
       });
     }
 
-    const requestedUser = await conn.db
-      .collection("users")
-      .findOne({ email: email.toLowerCase() });
+    const requestedUser = await UserModel.findOne({
+      email: email.toLowerCase(),
+    }).exec();
 
     if (!requestedUser) {
       return res.json({
@@ -24,12 +24,10 @@ const createMarker = async (req, res) => {
       });
     }
 
-    const result = await conn
-      .collection("users")
-      .findOneAndUpdate(
-        { email: email.toLowerCase() },
-        { $push: { markers: marker } }
-      );
+    const result = await UserModel.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { $push: { markers: marker } }
+    );
 
     if (result.error) {
       return res.json({
@@ -60,9 +58,9 @@ const deleteMarker = async (req, res) => {
       });
     }
 
-    const requestedUser = await conn.db
-      .collection("users")
-      .findOne({ email: email.toLowerCase() });
+    const requestedUser = await UserModel.findOne({
+      email: email.toLowerCase(),
+    }).exec();
 
     if (!requestedUser) {
       return res.json({
@@ -70,16 +68,15 @@ const deleteMarker = async (req, res) => {
         message: "User does not exist.",
       });
     }
+
     const filteredMarkers = requestedUser.markers.filter(
       (m) => m.id !== marker.id
     );
 
-    const result = await conn
-      .collection("users")
-      .findOneAndUpdate(
-        { email: email.toLowerCase() },
-        { $set: { markers: filteredMarkers } }
-      );
+    const result = await UserModel.updateOne(
+      { email: email.toLowerCase() },
+      { $set: { markers: filteredMarkers } }
+    );
 
     if (result.error) {
       return res.json({
