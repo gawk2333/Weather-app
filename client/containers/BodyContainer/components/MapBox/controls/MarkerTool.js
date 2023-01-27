@@ -122,7 +122,7 @@ export default function MarkerTool({
         (m) => m.id !== markerForDelete.id
       );
       setMarkers(filteredMarkers);
-      toast.success("Marker deleted2.");
+      toast.success("Marker deleted.");
     }
   };
 

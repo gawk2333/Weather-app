@@ -13,8 +13,8 @@ server.use(express.static(path.join(__dirname, "./public")));
 server.use("/fonts", express.static(resolve(__dirname, "./fonts")));
 // server.use(cors('*'))
 
-const userRoute = require("./routes/userRoute");
-const markerRoute = require("./routes/markerRoute");
+const userRoute = require("./routes/user.route");
+const markerRoute = require("./routes/marker.route");
 
 server.use("/api/v1/users", userRoute);
 server.use("/api/v1/markers", markerRoute);

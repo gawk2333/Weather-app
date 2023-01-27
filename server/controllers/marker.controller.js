@@ -1,9 +1,6 @@
-const express = require("express");
-const router = express.Router();
-const conn = require("./db");
+const conn = require("../db");
 
-// router for sign-up
-router.post("/create", async (req, res) => {
+const createMarker = async (req, res) => {
   try {
     // Get user input
     const { email, marker } = req.body;
@@ -48,9 +45,9 @@ router.post("/create", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-});
+};
 
-router.delete("/delete", async (req, res) => {
+const deleteMarker = async (req, res) => {
   try {
     // Get user input
     const { email, marker } = req.body;
@@ -98,6 +95,9 @@ router.delete("/delete", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  createMarker,
+  deleteMarker,
+};

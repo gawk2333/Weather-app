@@ -1,11 +1,8 @@
-const express = require("express");
-const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const conn = require("./db");
+const conn = require("../db");
 
-// router for sign-up
-router.post("/register", async (req, res) => {
+const userRegister = async (req, res) => {
   let oldUser;
   try {
     // Get user input
@@ -68,10 +65,9 @@ router.post("/register", async (req, res) => {
     console.log(err);
   }
   // Our register logic ends here
-});
+};
 
-// router for sign-in
-router.post("/login", async (req, res) => {
+const userLogin = async (req, res) => {
   try {
     // Get user input
     const { email, password } = req.body;
@@ -113,9 +109,9 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
   // Our register logic ends here
-});
+};
 
-router.post("/validation/:token", async (req, res) => {
+const validateAuthToken = async (req, res) => {
   try {
     const { token } = req.params;
     if (!token) {
@@ -158,6 +154,10 @@ router.post("/validation/:token", async (req, res) => {
     console.log(err);
   }
   // Our register logic ends here
-});
+};
 
-module.exports = router;
+module.exports = {
+  userRegister,
+  userLogin,
+  validateAuthToken,
+};
