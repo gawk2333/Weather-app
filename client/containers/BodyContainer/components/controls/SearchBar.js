@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { OpenStreetMapProvider, GeoSearchControl } from "leaflet-geosearch";
-import "../../../../../../node_modules/leaflet-geosearch/dist/geosearch.css";
+import "leaflet-geosearch/dist/geosearch.css";
 
 export default function SearchBar() {
   const map = useMap();

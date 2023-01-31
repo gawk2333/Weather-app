@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { vectorBasemapLayer } from "esri-leaflet-vector";
 import styles from "./mapBox.module.css";
 import { MapContainer } from "react-leaflet";
-import { SearchBar, MarkerTool } from "./controls";
+import { SearchBar, MarkerTool, ModuleContainer } from "../controls";
+import { Checkbox } from "semantic-ui-react";
 import SideBar from "./SideBar";
 import { BASE_MAPS } from "../../../HeaderBar/consts";
 import L from "leaflet";
+import { LoginContext } from "../../../../store/loginContext";
 
 export default function MapBox({
   markers,
@@ -15,7 +17,10 @@ export default function MapBox({
   userLocation,
   isMarker,
 }) {
+  const loginState = useContext(LoginContext.State);
   const [map, setMap] = useState(null);
+  const [showMarkers, setShowMarkers] = useState(false);
+
   useEffect(() => {
     if (map != null) {
       const baseLayers = {};
@@ -37,6 +42,7 @@ export default function MapBox({
         );
     }
   }, [map]);
+
   return (
     <>
       <MapContainer
@@ -51,6 +57,7 @@ export default function MapBox({
       >
         <MarkerTool
           markers={markers}
+          showMarkers={showMarkers}
           setMarkers={setMarkers}
           userLocation={userLocation}
           isMarker={isMarker}
@@ -61,6 +68,22 @@ export default function MapBox({
           markers={markers}
           setMarkers={setMarkers}
         />
+        {loginState.loggedIn && (
+          <ModuleContainer
+            position="bottomright"
+            icon="list"
+            title="Show markers"
+            content={
+              <div>
+                <Checkbox
+                  label="showMarkers"
+                  onChange={() => setShowMarkers(!showMarkers)}
+                  checked={showMarkers}
+                />
+              </div>
+            }
+          />
+        )}
         <SearchBar />
       </MapContainer>
     </>

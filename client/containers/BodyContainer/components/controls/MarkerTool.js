@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
-import { LoginContext } from "../../../../../store/loginContext";
+import { LoginContext } from "../../../../store/loginContext";
 import { Icon, Grid, Popup as SemanticPopup } from "semantic-ui-react";
 import { v4 } from "uuid";
-import { markerCreateApi, markerDeleteApi } from "../../../../../api/markerApi";
-import { getWeatherByGeoPositionApi } from "../../../../../api/weatherApi";
+import { markerCreateApi, markerDeleteApi } from "../../../../api/markerApi";
+import { getWeatherByGeoPositionApi } from "../../../../api/weatherApi";
 import L from "leaflet";
 import { toast } from "react-toastify";
 
 export default function MarkerTool({
   markers,
+  showMarkers,
   setMarkers,
   userLocation,
   isMarker,
@@ -19,7 +20,6 @@ export default function MarkerTool({
   const [zoom, setZoom] = useState(5);
   const loginState = useContext(LoginContext.State);
   const loginDispatch = useContext(LoginContext.Dispatch);
-  // const markerRef = useRef(null);
 
   const map = useMapEvents({
     click: async ({ latlng }) => {
@@ -78,7 +78,7 @@ export default function MarkerTool({
           toast.error(err.message);
         }
       } else {
-        toast.error("Invalid request1");
+        toast.error("Invalid request");
       }
     } else {
       setActiveMarker(null);
@@ -166,102 +166,108 @@ export default function MarkerTool({
 
   return (
     <>
-      {activeMarker && (
-        <Marker
-          icon={getMarkerIcon(activeMarker, zoom)}
-          position={{
-            lat: activeMarker.lat,
-            lng: activeMarker.lng,
-          }}
-          riseOnHover={true}
-        >
-          <Popup minWidth={180}>
-            <Grid columns={2}>
-              <Grid.Row columns="equal">
-                <Grid.Column>{activeMarker.location.name}</Grid.Column>
-                <Grid.Column>{activeMarker.location.localtime}</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns="equal">
-                <Grid.Column>{activeMarker.location.region}</Grid.Column>
-                <Grid.Column>{activeMarker.weather.condition.text}</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns="equal">
-                <Grid.Column>{activeMarker.location.country}</Grid.Column>
-                <Grid.Column>{activeMarker.weather.temp_c}℃</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns="equal">
-                <Grid.Column>
-                  <span style={{ color: "blue", cursor: "pointer" }}>
-                    more details
-                  </span>
-                </Grid.Column>
-                <Grid.Column>
-                  <SemanticPopup
-                    content={"Save marker."}
-                    trigger={
-                      <Icon
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => handleSaveMarker(e, activeMarker)}
-                        color="green"
-                        name="save"
+      {showMarkers && (
+        <>
+          {activeMarker && (
+            <Marker
+              icon={getMarkerIcon(activeMarker, zoom)}
+              position={{
+                lat: activeMarker.lat,
+                lng: activeMarker.lng,
+              }}
+              riseOnHover={true}
+            >
+              <Popup minWidth={180}>
+                <Grid columns={2}>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{activeMarker.location.name}</Grid.Column>
+                    <Grid.Column>{activeMarker.location.localtime}</Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{activeMarker.location.region}</Grid.Column>
+                    <Grid.Column>
+                      {activeMarker.weather.condition.text}
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{activeMarker.location.country}</Grid.Column>
+                    <Grid.Column>{activeMarker.weather.temp_c}℃</Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>
+                      <span style={{ color: "blue", cursor: "pointer" }}>
+                        more details
+                      </span>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <SemanticPopup
+                        content={"Save marker."}
+                        trigger={
+                          <Icon
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => handleSaveMarker(e, activeMarker)}
+                            color="green"
+                            name="save"
+                          />
+                        }
                       />
-                    }
-                  />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Popup>
-        </Marker>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Popup>
+            </Marker>
+          )}
+          {markers?.map((marker, index) => (
+            <Marker
+              key={`savedMarker-${marker.id}`}
+              icon={getMarkerIcon(marker, zoom)}
+              position={{
+                lat: marker.lat,
+                lng: marker.lng,
+              }}
+              riseOnHover={true}
+              // ref={markerRef}
+            >
+              <Popup minWidth={180}>
+                <Grid columns={2}>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{marker.location.name}</Grid.Column>
+                    <Grid.Column>{marker.location.localtime}</Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{marker.location.region}</Grid.Column>
+                    <Grid.Column>{marker.weather.condition.text}</Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns="equal">
+                    <Grid.Column>{marker.location.country}</Grid.Column>
+                    <Grid.Column>{marker.weather.temp_c}℃</Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row stretched>
+                    <Grid.Column>
+                      <span style={{ color: "blue", cursor: "pointer" }}>
+                        more details
+                      </span>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <SemanticPopup
+                        content={"Delete marker."}
+                        trigger={
+                          <Icon
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => handleDeleteMarker(e, marker)}
+                            color="red"
+                            name="close"
+                          />
+                        }
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Popup>
+            </Marker>
+          ))}
+        </>
       )}
-      {markers?.map((marker, index) => (
-        <Marker
-          key={`savedMarker-${marker.id}`}
-          icon={getMarkerIcon(marker, zoom)}
-          position={{
-            lat: marker.lat,
-            lng: marker.lng,
-          }}
-          riseOnHover={true}
-          // ref={markerRef}
-        >
-          <Popup minWidth={180}>
-            <Grid columns={2}>
-              <Grid.Row columns="equal">
-                <Grid.Column>{marker.location.name}</Grid.Column>
-                <Grid.Column>{marker.location.localtime}</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns="equal">
-                <Grid.Column>{marker.location.region}</Grid.Column>
-                <Grid.Column>{marker.weather.condition.text}</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns="equal">
-                <Grid.Column>{marker.location.country}</Grid.Column>
-                <Grid.Column>{marker.weather.temp_c}℃</Grid.Column>
-              </Grid.Row>
-              <Grid.Row stretched>
-                <Grid.Column>
-                  <span style={{ color: "blue", cursor: "pointer" }}>
-                    more details
-                  </span>
-                </Grid.Column>
-                <Grid.Column>
-                  <SemanticPopup
-                    content={"Delete marker."}
-                    trigger={
-                      <Icon
-                        style={{ cursor: "pointer" }}
-                        onClick={(e) => handleDeleteMarker(e, marker)}
-                        color="red"
-                        name="close"
-                      />
-                    }
-                  />
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Popup>
-        </Marker>
-      ))}
     </>
   );
 }
