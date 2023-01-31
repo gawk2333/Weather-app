@@ -9,7 +9,7 @@ const POSITION_CLASSES = {
   topright: "leaflet-top leaflet-right",
 };
 export default function ModuleContainer({ position, icon, title, content }) {
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(true);
   const moduleRef = useRef(null);
 
   const handleControlClick = (e) => {
