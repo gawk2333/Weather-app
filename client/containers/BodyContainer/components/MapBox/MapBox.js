@@ -19,7 +19,7 @@ export default function MapBox({
 }) {
   const loginState = useContext(LoginContext.State);
   const [map, setMap] = useState(null);
-  const [showMarkers, setShowMarkers] = useState(false);
+  const [showMarkers, setShowMarkers] = useState(true);
 
   useEffect(() => {
     if (map != null) {
