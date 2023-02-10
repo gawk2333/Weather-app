@@ -245,7 +245,7 @@ export default function MarkerTool({
                   <Grid.Row stretched>
                     <Grid.Column>
                       <span style={{ color: "blue", cursor: "pointer" }}>
-                        more details
+                        more details<span style={{ color: "red" }}>(todo)</span>
                       </span>
                     </Grid.Column>
                     <Grid.Column>
