@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise;
 const defaultConnection = mongoose;
 
 const initDefaultConnection = function initDefaultConnection() {
-  console.log("mongoURI", mongoConfig.mongoURI);
+  console.log("mongoURI: ", mongoConfig.mongoURI);
   return mongoose.connect(
     mongoConfig.mongoURI,
     mongoConfig.dbConnectionOptions

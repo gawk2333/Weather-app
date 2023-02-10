@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useRef, useEffect } from "react";
 import { Icon, Popup } from "semantic-ui-react";
 import { DomEvent } from "leaflet";

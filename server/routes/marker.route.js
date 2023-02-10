@@ -6,7 +6,6 @@ const {
   deleteMarker,
 } = require("../controllers/marker.controller");
 
-// router for sign-up
 router.post("/create", createMarker);
 
 router.delete("/delete", deleteMarker);

@@ -2,10 +2,10 @@ const UserModel = require("../models/user.model");
 
 const createMarker = async (req, res) => {
   try {
-    // Get user input
+    // Get markerInfo
     const { email, marker } = req.body;
 
-    // Validate user input
+    // Validate markerInfo
     if (!(email && marker)) {
       return res.json({
         error: true,
@@ -35,7 +35,7 @@ const createMarker = async (req, res) => {
         message: "Database error.",
       });
     }
-    // return new user
+    // return result
     return res.json({
       error: false,
       message: "Marker created.",
@@ -47,10 +47,10 @@ const createMarker = async (req, res) => {
 
 const deleteMarker = async (req, res) => {
   try {
-    // Get user input
+    // Get markerInfo
     const { email, marker } = req.body;
 
-    // Validate user input
+    // Validate markerInfo
     if (!(email && marker)) {
       return res.json({
         error: true,
@@ -84,7 +84,7 @@ const deleteMarker = async (req, res) => {
         message: "Database error.",
       });
     }
-    // return new user
+    // return result
     return res.json({
       error: false,
       message: "Marker deleted.",
