@@ -69,7 +69,7 @@ const reducer = (state, action) => {
       const { markers } = action.payload;
       return {
         ...state,
-        markers,
+        ...markers,
       };
     }
     default:
